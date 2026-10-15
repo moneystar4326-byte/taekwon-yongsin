@@ -13,7 +13,7 @@ export function PreflightCheck({ students, settings }: { students: Student[]; se
 
   useEffect(() => {
     let cancelled = false;
-    preloadAll(allAssets().map((a) => a.path)).then((rs) => {
+    preloadAll(allAssets().filter((a) => a.status !== 'missing').map((a) => a.path)).then((rs) => {
       if (!cancelled) setLoaded(Object.fromEntries(rs.map((r) => [r.path, r.ok])));
     });
     const count = () => setVoices(audio.koreanVoices().length);
@@ -105,7 +105,7 @@ export function PreflightCheck({ students, settings }: { students: Student[]; se
               <tr key={a.path}>
                 <td>{a.label}<div className="muted small"><code>{a.path}</code></div></td>
                 <td><span className={`status ${a.status}`}>{STATUS_LABEL[a.status]}</span></td>
-                <td>{!loaded ? '…' : loaded[a.path] ? '정상' : <span className="bad-text">실패</span>}</td>
+                <td>{a.status === 'missing' ? '없음' : !loaded ? '…' : loaded[a.path] ? '정상' : <span className="bad-text">실패</span>}</td>
                 <td className="small">{a.note}</td>
               </tr>
             ))}
