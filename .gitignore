@@ -1,0 +1,9 @@
+node_modules
+dist
+*.log
+
+# 공유할 필요 없는 작업 파일
+kling-작업/음성_샘플/
+kling-작업/음악_미리듣기.mp3
+kling-작업/2_결과영상여기에/보관/
+assets-source/music/candidates/

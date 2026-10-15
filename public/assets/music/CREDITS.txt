@@ -1,0 +1,18 @@
+배경 음악 — 관장님이 제공한 파일에서 구간을 잘라 사용
+원본: "#1 말이 필요없는 웅장한 브금,음악 Best Epic Bgm,Music 2017.mp3" (유튜브 모음, 22분)
+      → assets-source/music/best-epic-bgm-2017.mp3
+
+  calm.mp3     대기·손 얹기         17:42 ~ 20:19
+  epic.mp3     소환·용신 등장       1:43 ~ 2:58 (같은 곡이 반복되는 구간 한 바퀴, 끊김 없이 반복)
+  tension.mp3  발표 준비·카운트다운 8:13 ~ 11:03
+  triumph.mp3  합격 공개            15:38 ~ 17:38
+  finale.mp3   기념 페이지          18:11 ~ 22:16
+
+주의: 이 모음 안의 곡들은 저작권이 있는 곡일 가능성이 높다.
+도장 안 행사에서 트는 것은 운영자 판단이지만, 행사 영상을 유튜브·SNS에 올리면 저작권 신고로
+소리가 꺼지거나 영상이 차단될 수 있다.
+
+저작권 걱정 없는 CC0 곡 세트는 assets-source/music/cc0-web/ 에 그대로 있다.
+그 폴더의 mp3 5개를 이 폴더에 덮어쓰고 다시 빌드하면 CC0 버전으로 돌아간다.
+(New Sunrise — nene / Epic Endgame Cinematic — cynicmusic / Unexplored Expanded — Tad·bo-jingles /
+ Victory Theme for RPG — cynicmusic / JRPG Theme — Juhani Junkala, 모두 opengameart.org CC0)

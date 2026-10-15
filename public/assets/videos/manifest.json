@@ -1,0 +1,12 @@
+{
+  "videos": [
+    "assets/videos/boy/idle.mp4",
+    "assets/videos/boy/touch.mp4",
+    "assets/videos/boy/summon.mp4",
+    "assets/videos/boy/dragon.mp4",
+    "assets/videos/touch-hand.mp4",
+    "assets/videos/bg-summon.mp4",
+    "assets/videos/bg-day.mp4",
+    "assets/videos/dragon-face.webm"
+  ]
+}
