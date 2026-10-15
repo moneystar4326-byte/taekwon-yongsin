@@ -133,9 +133,20 @@ describe('ceremonyReducer', () => {
     expect(timer(s)).toBe(s);
   });
 
-  it('수동 모드에서는 대기 장면이 스스로 시작하지 않는다', () => {
-    expect(stepDuration(initialState(1, 0, DEFAULT_AUTO))).toBeNull();
-    expect(stepDuration(initialState(1))).toBeNull();
+  it('자동 진행이면 대기 대사 뒤 손 얹기로 스스로 넘어가고, 수동이면 기다린다', () => {
+    const auto = initialState(1, t, DEFAULT_AUTO);
+    expect(stepDuration(auto)).toBe(DEFAULT_AUTO.idleMs);
+    expect(timer(auto).phase).toBe('TOUCH');
+    const manual = initialState(1, t);
+    expect(stepDuration(manual)).toBeNull();
+    expect(timer(manual)).toBe(manual);
+  });
+
+  it('자동 진행: 무대가 열리면 아무것도 누르지 않아도 첫 수련생 사진까지 간다', () => {
+    let s = initialState(2, t, DEFAULT_AUTO);
+    let guard = 0;
+    while (s.phase !== 'READY' && guard++ < 10) s = timer(s);
+    expect(s.phase).toBe('READY');
   });
 
   it('복원은 결과를 자동 공개하지 않는다', () => {

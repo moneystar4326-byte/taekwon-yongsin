@@ -25,7 +25,7 @@ const HINT: Record<CeremonyState['phase'], string> = {
 
 /** 자동 진행일 때 안내 */
 const AUTO_HINT: Partial<Record<CeremonyState['phase'], string>> = {
-  IDLE: '[시작]을 한 번 누르면 용신 등장까지 자동으로 진행되고, 첫 수련생 사진에서 멈춥니다.',
+  IDLE: '잠시 뒤 자동으로 시작됩니다(용신 등장까지 자동, 첫 수련생 사진에서 멈춤). [시작]으로 바로 넘어갈 수 있습니다.',
   SUMMON: '아이들이 구호를 외치는 시간입니다. 정해진 시간 뒤 용신이 나타납니다. [다음]으로 앞당길 수 있습니다.',
 };
 

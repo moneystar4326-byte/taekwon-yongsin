@@ -14,11 +14,13 @@ export const NEXT_GUARD_MS = 700;
  * 없으면(null) 소환 장면에서도 운영자가 [다음]을 눌러야 한다.
  */
 export interface AutoTiming {
+  /** 대기: 첫 대사("열한 개의 수련구슬이 모였습니다") 뒤 손 얹기로 넘어가기까지 */
+  idleMs: number;
   /** 소환: 아이들이 구호를 외치는 시간 */
   summonMs: number;
 }
 
-export const DEFAULT_AUTO: AutoTiming = { summonMs: 10000 };
+export const DEFAULT_AUTO: AutoTiming = { idleMs: 7000, summonMs: 10000 };
 
 export interface CeremonyState {
   auto: AutoTiming | null;
@@ -51,6 +53,7 @@ export function stepDuration(s: CeremonyState): number | null {
     case 'TOUCH': return TOUCH_MS;
     case 'DRAGON': return DRAGON_MS;
     case 'COUNTDOWN': return s.count > 0 ? COUNT_MS : HUSH_MS;
+    case 'IDLE': return s.auto?.idleMs ?? null;
     case 'SUMMON': return s.auto?.summonMs ?? null;
     default: return null; // 대기·발표 준비·합격 공개·기념 페이지는 운영자가 넘긴다
   }
@@ -97,6 +100,7 @@ export function ceremonyReducer(s: CeremonyState, a: CeremonyAction): CeremonySt
     case 'TIMER': {
       if (s.paused || a.step !== s.step || stepDuration(s) == null) return s;
       switch (s.phase) {
+        case 'IDLE': return go(s, a.now, { phase: 'TOUCH' });
         case 'TOUCH': return go(s, a.now, { phase: 'SUMMON' });
         case 'SUMMON': return go(s, a.now, { phase: 'DRAGON' });
         case 'DRAGON': return afterDragon(s, a.now);

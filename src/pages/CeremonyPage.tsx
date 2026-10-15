@@ -209,7 +209,7 @@ function Gate({ onOpen }: { onOpen: (r: Ready) => void }) {
 
         <div className="row end">
           <a className="btn" href="#/setup">준비 화면으로</a>
-          <button className="btn primary big" disabled={!canOpen} onClick={open}>무대 열기</button>
+          <button className="btn primary big" disabled={!canOpen} onClick={open}>행사 시작</button>
         </div>
       </div>
     </div>
