@@ -6,7 +6,7 @@ import { usableAvatar, type CeremonySettings, type Phase, type Workspace } from 
 import {
   BG_VIDEOS, CLEAN_BACKGROUNDS, DRAGON_FACE_VIDEO, SCENE_VIDEOS, TEMP_BACKGROUNDS, TOUCH_INSERT_VIDEO, coreAssets, type AssetEntry, type BackgroundKey,
 } from '../config/assets-manifest';
-import { loadVideoList, preloadVideo } from '../services/videos';
+import { loadVideoList, preloadVideo, supportsAlphaWebm } from '../services/videos';
 import { audio } from '../services/audio';
 import { music, type Cue } from '../services/music';
 import { preloadAll, preloadImage } from '../services/preload';
@@ -69,7 +69,7 @@ function Gate({ onOpen }: { onOpen: (r: Ready) => void }) {
         const avatar = usableAvatar(sess?.avatar ?? s.avatar);
         const entries = coreAssets(avatar);
         const listed = await loadVideoList();
-        const wanted = [...Object.values(SCENE_VIDEOS[avatar]).map((v) => v.path), TOUCH_INSERT_VIDEO, DRAGON_FACE_VIDEO, ...Object.values(BG_VIDEOS)].filter((p) => listed.has(p));
+        const wanted = [...Object.values(SCENE_VIDEOS[avatar]).map((v) => v.path), TOUCH_INSERT_VIDEO, ...(supportsAlphaWebm() ? [DRAGON_FACE_VIDEO] : []), ...Object.values(BG_VIDEOS)].filter((p) => listed.has(p));
         const [results, cleanDay, cleanSummon, videoResults] = await Promise.all([
           preloadAll(entries.map((e) => e.path), (d, t) => !cancelled && setProgress([d, t])),
           preloadImage(CLEAN_BACKGROUNDS.day.path),

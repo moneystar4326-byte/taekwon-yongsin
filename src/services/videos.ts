@@ -12,6 +12,18 @@ export async function loadVideoList(): Promise<Set<string>> {
   }
 }
 
+/**
+ * 투명 배경 WebM(VP9 알파)을 제대로 그릴 수 있는 브라우저인지.
+ * 사파리(아이폰·맥)는 알파를 무시해 검은 상자로 보이므로 정지 그림을 쓴다.
+ */
+export function supportsAlphaWebm(): boolean {
+  const ua = navigator.userAgent;
+  const isSafari = /Safari\//.test(ua) && !/Chrome\/|Chromium\/|Edg\/|CriOS\/|FxiOS\//.test(ua);
+  const isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if (isSafari || isIOS) return false;
+  return document.createElement('video').canPlayType('video/webm; codecs="vp9"') !== '';
+}
+
 /** 영상이 실제로 재생 가능한 만큼 받아졌는지 확인한다. 시간 안에 안 되면 실패로 보고 정지 이미지를 쓴다 */
 export function preloadVideo(path: string, timeoutMs = 20000): Promise<{ path: string; ok: boolean }> {
   return new Promise((resolve) => {
