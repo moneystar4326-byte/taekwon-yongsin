@@ -311,10 +311,13 @@ function Ceremony({ snapshot, settings, restore, assets, warnings, ws }: Ready &
       case 'SUMMON': audio.cancel(); audio.boom(); break;
       case 'DRAGON': audio.boom(); say(LINES.dragon, 'dragon'); break;
       case 'READY': if (state.groupIndex === 0) say(LINES.ready, 'ready'); else audio.cancel(); break;
-      case 'COUNTDOWN': if (state.count > 0) audio.drum(state.count); else audio.cancel(); break;
+      case 'COUNTDOWN':
+        if (state.count === 5) audio.riser(5.4); // 5에서 0까지 차오르는 상승음
+        if (state.count > 0) audio.drum(state.count); else audio.cancel();
+        break;
       case 'REVEAL':
         if (g) {
-          audio.boom();
+          audio.impact(); // 거대한 충격음 + 심벌
           if (!settings.bgm) audio.fanfare();
           const first = snapshot.students[g.studentIds[0]];
           if (g.studentIds.length === 1 && first) {

@@ -9,6 +9,7 @@ import {
 } from '../config/assets-manifest';
 import { StudentPhoto } from './StudentPhoto';
 import { Fireworks } from './Fireworks';
+import { Confetti } from './Confetti';
 import { SceneVideo } from './SceneVideo';
 
 /** 손 클로즈업 컷이 보이는 시간. 그 뒤에 장면 영상이 시작된다 */
@@ -188,16 +189,22 @@ export function CeremonyScene({ state, snapshot, avatar, mode, photos, assets, r
       {phase === 'COUNTDOWN' && group && (
         <>
           {state.count > 0 && (
-            <div className="count" key={`${state.step}`}>{state.count}</div>
+            <>
+              {!reduced && <div className="count-ring" key={`ring${state.step}`} aria-hidden />}
+              <div className="count" key={`${state.step}`}>{state.count}</div>
+            </>
           )}
           <PhotoRow members={members} photos={photos} size={mode === 'INDIVIDUAL' ? 260 : 200} names={false} className="countdown-row" />
         </>
       )}
 
       {phase === 'REVEAL' && group && (
-        <>
-          {!reduced && <Fireworks key={state.step} paused={state.paused} />}
-          <div className="reveal-title title-plate" key={`t${state.step}`}>{revealTitle(group.poom)}</div>
+        <div className="reveal" key={`rv${state.step}`}>
+          {/* 1) 빛이 한 번 번쩍이며 장면 전환 → 2) 사진 뒤 금빛 광선 → 3) 사진·제목 등장 → 4) 폭죽·꽃가루 */}
+          <div className="reveal-rays" aria-hidden />
+          {!reduced && <Fireworks paused={state.paused} density={1.5} durationMs={9000} sound />}
+          {!reduced && <Confetti paused={state.paused} />}
+          <div className="reveal-title title-plate">{revealTitle(group.poom)}</div>
           <PhotoRow
             members={members}
             photos={photos}
@@ -205,7 +212,8 @@ export function CeremonyScene({ state, snapshot, avatar, mode, photos, assets, r
             names
             className={`reveal-row ${mode === 'INDIVIDUAL' ? 'single' : ''}`}
           />
-        </>
+          <div className="reveal-flash" aria-hidden />
+        </div>
       )}
 
       {phase === 'COMPLETE' && (

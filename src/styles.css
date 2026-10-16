@@ -323,3 +323,42 @@ video.touch-insert { object-fit: cover; }
 video.bg-video { object-fit: cover; }
 /* 움직이는 용 얼굴(투명 WebM): 정지 그림과 같은 자리·크기. 가장자리 초록 잔상은 금빛 광채로 덮는다 */
 video.dragon-face-video { height: auto; background: transparent; object-fit: contain; filter: drop-shadow(0 0 22px rgba(255, 205, 100, 0.75)) saturate(1.05); }
+
+/* ── 합격 공개 연출 ─────────────────────────────── */
+.reveal { position: absolute; inset: 0; }
+/* 1) 장면 전환: 금빛 섞인 흰 빛이 한 번 번쩍였다가 사라진다(반복 점멸 없음) */
+.reveal-flash {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  background: radial-gradient(circle at 50% 55%, #fffdf2 0%, #ffe9a8 35%, rgba(255, 210, 120, 0.85) 70%, rgba(255, 190, 90, 0.6) 100%);
+  animation: revealFlash 1.1s ease-out both;
+}
+@keyframes revealFlash { 0% { opacity: 1; } 25% { opacity: 0.95; } 100% { opacity: 0; } }
+/* 2) 사진 뒤에서 금빛 광선이 퍼지며 천천히 돈다 */
+.reveal-rays {
+  position: absolute; left: 50%; top: 640px; width: 1700px; height: 1700px; margin: -850px 0 0 -850px; border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 226, 140, 0.42) 0deg 7deg, rgba(255, 226, 140, 0) 7deg 22deg);
+  -webkit-mask-image: radial-gradient(circle, #000 12%, transparent 62%); mask-image: radial-gradient(circle, #000 12%, transparent 62%);
+  animation: raysIn 1.2s cubic-bezier(0.2, 0.9, 0.3, 1.2) 0.15s both, raysSpin 40s linear 0.15s infinite;
+}
+@keyframes raysIn { from { transform: scale(0.1); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes raysSpin { from { rotate: 0deg; } to { rotate: 360deg; } }
+/* 3) 사진은 작게 튀어나오며 커졌다 자리 잡고, 제목은 크게 내려찍듯 들어온다 */
+.reveal .pcard { animation: photoPop 0.9s cubic-bezier(0.18, 1.3, 0.4, 1) 0.35s both; }
+@keyframes photoPop { 0% { transform: scale(0.2) rotate(-10deg); opacity: 0; } 60% { transform: scale(1.12) rotate(2deg); opacity: 1; } 100% { transform: none; opacity: 1; } }
+.reveal .reveal-title { animation: titleSlam 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) 0.55s both; }
+@keyframes titleSlam { 0% { scale: 2.6; opacity: 0; } 70% { scale: 0.94; opacity: 1; } 100% { scale: 1; opacity: 1; } }
+.reveal .photo-gold { animation: winGlow 2.2s ease-in-out 1.2s infinite; }
+@keyframes winGlow {
+  0%, 100% { box-shadow: 0 0 0 8px #e9b949, 0 0 0 14px rgba(255, 240, 200, 0.6), 0 0 50px 16px rgba(255, 196, 70, 0.55); }
+  50% { box-shadow: 0 0 0 8px #ffe08a, 0 0 0 18px rgba(255, 245, 210, 0.8), 0 0 110px 40px rgba(255, 205, 90, 0.85); }
+}
+/* 꽃가루는 사진·이름 뒤로 지나가게 한다 */
+.scene.reduced .reveal-rays, .scene.reduced .reveal-flash { display: none; }
+
+/* 카운트다운 숫자마다 퍼지는 금빛 충격파 */
+.count-ring {
+  position: absolute; left: 50%; top: 545px; width: 700px; height: 700px; margin: -350px 0 0 -350px; border-radius: 50%;
+  border: 10px solid rgba(255, 220, 130, 0.9); box-shadow: 0 0 60px rgba(255, 200, 90, 0.8), inset 0 0 60px rgba(255, 200, 90, 0.6);
+  animation: countRing 0.9s ease-out both; pointer-events: none;
+}
+@keyframes countRing { from { transform: scale(0.25); opacity: 1; } to { transform: scale(1.5); opacity: 0; } }

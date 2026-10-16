@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { audio } from '../services/audio';
 import { STAGE_H, STAGE_W } from './Stage';
 
 interface Spark { x: number; y: number; vx: number; vy: number; life: number; max: number; hue: number }
@@ -7,7 +8,9 @@ interface Spark { x: number; y: number; vx: number; vy: number; life: number; ma
  * 합격 공개용 폭죽. 화면 위쪽과 양옆에서만 터져 사진·이름을 가리지 않고 durationMs 뒤 끝난다.
  * 빠른 점멸 없이 천천히 퍼지고 사라진다. 일시정지 중에는 멈춘다.
  */
-export function Fireworks({ paused, durationMs = 6500, density = 1 }: { paused: boolean; durationMs?: number; density?: number }) {
+export function Fireworks({
+  paused, durationMs = 6500, density = 1, sound = false,
+}: { paused: boolean; durationMs?: number; density?: number; sound?: boolean }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const pausedRef = useRef(paused);
   pausedRef.current = paused;
@@ -29,12 +32,13 @@ export function Fireworks({ paused, durationMs = 6500, density = 1 }: { paused: 
     };
 
     const burst = () => {
+      if (sound) audio.pop();
       const { x, y } = spot();
       const hue = [42, 48, 36, 170, 330][Math.floor(Math.random() * 5)];
       const n = Math.round(70 * density);
       for (let i = 0; i < n; i++) {
         const a = (i / n) * Math.PI * 2;
-        const v = 2.2 + Math.random() * 2.6;
+        const v = (2.2 + Math.random() * 2.6) * (density > 1 ? 1.25 : 1);
         sparks.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: 0, max: 70 + Math.random() * 40, hue });
       }
     };
@@ -73,7 +77,7 @@ export function Fireworks({ paused, durationMs = 6500, density = 1 }: { paused: 
     };
     raf = requestAnimationFrame(frame);
     return () => cancelAnimationFrame(raf);
-  }, [durationMs, density]);
+  }, [durationMs, density, sound]);
 
   return <canvas ref={canvas} className="fireworks" width={STAGE_W} height={STAGE_H} aria-hidden />;
 }
